@@ -29,5 +29,58 @@ export const Header = styled.header`
 
     }
 
+`
+export const ListContainer = styled.div`
+    margin-top: 24px;
+    header {
+        button{
+            margin-bottom: 8px;
+            border: none;
+            background: transparent;
+            display: flex;
+            align-items: center;
+        }
+        span{
+        color: ${props => props.theme.colors.primary.main};
+        /* font-weigh: bold; */
+        margin-right: 8px
+        }
+
+}
+`
+export const Cardlist = styled.div`
+    background: #fff;
+    padding: 16px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.04);
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    .info{
+        .contact-name{
+            display: flex;
+            align-items: center;
+
+            small {
+                background: ${props => props.theme.colors.primary.lighter};
+                color: ${props => props.theme.colors.primary.main};
+                text-transform: uppercase;
+                font-weight: bold;
+                margin-left: 8px;
+            }
+        }
+            span {
+             display: block;
+             color: ${props => props.theme.colors.grey[200]};
+            }
+
+    }
+        .actions{
+                button{
+                    border: none;
+                    background: transparent;
+                    margin-left: 8px;
+                }
+            }
 
 `
