@@ -1,12 +1,18 @@
-import { Container, Header, ListContainer, Cardlist } from "./styled.jsx";
+import { Container, Header, ListContainer, Cardlist, InputSearchContainer }
+from "./styled.jsx";
 import arrow from "../../assets/images/icons/arrow.svg";
 import edit from "../../assets/images/icons/edit.svg"
 import trash from "../../assets/images/icons/trash.svg"
 
 
-export default function ContactList() {
+export default function Home() {
     return (
         <Container>
+
+            <InputSearchContainer>
+                <input type="text" placeholder="Pesquisar contato..." />
+            </InputSearchContainer>
+
             <Header>
                 <strong>3 contatos</strong>
                 <a href="/">Novo Contato</a>
@@ -44,5 +50,5 @@ export default function ContactList() {
             </ListContainer>
 
         </Container>
-    );
+    )
 }
