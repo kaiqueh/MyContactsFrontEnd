@@ -1,6 +1,6 @@
 import arrow from "../../assets/images/icons/arrow.svg";
 import { Container } from "./styled.jsx";
-import { Link } from "react-router-dom/cjs/react-router-dom.js";
+import { Link } from "react-router-dom";
 
 export default function PageHeader({title}) {
     return (
