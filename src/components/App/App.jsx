@@ -3,7 +3,6 @@ import { ThemeProvider } from "styled-components";
 import defaultTheme from "../../assets/styles/themes/default.jsx";
 import Header from "../Header/Header.jsx";
 import { Container } from "./styled.jsx";
-
 import Routes from "../../Routes.jsx";
 import { BrowserRouter } from "react-router-dom";
 
