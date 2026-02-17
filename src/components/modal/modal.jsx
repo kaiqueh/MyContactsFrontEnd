@@ -1,16 +1,16 @@
 import { Overley, Container, Footer } from "./styled";
 import { Button } from "../Input/Button";
 
-export default function ModalComponent() {
+export default function ModalComponent({danger}) {
     return (
         <Overley>
-            <Container>
+            <Container danger={danger}>
                 <h1>Tem certeza que quer deletar o user Kaique reis</h1>
                 <p>Este é o conteúdo do modal.</p>
 
                 <Footer>
                     <button type="button" className="CancelButton">Cancelar</button>
-                    <Button type="button">Deletar</Button>
+                    <Button danger type="button">Deletar</Button>
                 </Footer>
 
             </Container>

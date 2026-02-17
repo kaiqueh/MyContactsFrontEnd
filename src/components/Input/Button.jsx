@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import {styled, css} from "styled-components";
 
 export const Button = styled.button`
     background-color: ${props => props.theme.colors.primary};
@@ -22,4 +22,12 @@ export const Button = styled.button`
         background-color: #ccc;
         cursor: not-allowed;
     }
+
+    ${props => props.danger && css`
+        background-color: ${props => props.theme.colors.danger.main};
+
+        &:hover{
+            background-color: ${props => props.theme.colors.danger.dark};
+        }
+    `}
 `
