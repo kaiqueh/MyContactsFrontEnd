@@ -7,7 +7,7 @@ import { Button } from "../Input/Button"
 export default function ContactForm({ LabelButton }) {
     return (
         <Form>
-            <FormGroup>
+            <FormGroup error="O formato é invalido">
                 <Input placeholder="Nome" />
             </FormGroup>
 

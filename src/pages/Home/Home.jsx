@@ -15,7 +15,7 @@ export default function Home() {
         <Container>
 
             {/* <ModalComponent danger/> */}
-            <Loader />
+            {/* <Loader /> */}
 
             <InputSearchContainer>
                 <input type="text" placeholder="Pesquisar contato..." />
