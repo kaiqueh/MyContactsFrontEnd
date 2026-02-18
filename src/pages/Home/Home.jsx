@@ -5,6 +5,8 @@ import edit from "../../assets/images/icons/edit.svg"
 import trash from "../../assets/images/icons/trash.svg"
 import { Link } from "react-router-dom";
 import  ModalComponent  from "../../components/modal/modal.jsx";
+import Loader from "../../components/Loader/Loader.jsx";
+
 
 
 
@@ -12,8 +14,8 @@ export default function Home() {
     return (
         <Container>
 
-            <ModalComponent danger/>
-
+            {/* <ModalComponent danger/> */}
+            <Loader />
 
             <InputSearchContainer>
                 <input type="text" placeholder="Pesquisar contato..." />
