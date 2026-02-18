@@ -1,8 +1,11 @@
 import { Overley, Container, Footer } from "./styled";
 import { Button } from "../Input/Button";
+import ReactDOM from "react-dom";
+
 
 export default function ModalComponent({danger}) {
     return (
+        ReactDOM.createPortal(
         <Overley>
             <Container danger={danger}>
                 <h1>Tem certeza que quer deletar o user Kaique reis</h1>
@@ -15,5 +18,6 @@ export default function ModalComponent({danger}) {
 
             </Container>
         </Overley>
-        )
+        , document.getElementById("modal-root")
+        ))
 }

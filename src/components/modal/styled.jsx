@@ -35,6 +35,7 @@ export const Footer = styled.footer`
     display: flex;
     margin-top: 24px;
     justify-content: flex-end;
+    align-items: center;
 
     .CancelButton{
         color: ${props => props.theme.colors.grey[200]};
