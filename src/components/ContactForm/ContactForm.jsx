@@ -1,3 +1,4 @@
+import { useState } from "react"
 import { Form } from "./styled"
 import FormGroup from "../FormGroup/formGroup"
 import { Input } from "../Input/input"
@@ -5,22 +6,57 @@ import { Select } from "../Input/input"
 import { Button } from "../Input/Button"
 
 export default function ContactForm({ LabelButton }) {
+
+    const [Name, setName] = useState("");
+    const [Email, setEmail] = useState("");
+    const [Phone, setPhone] = useState("");
+    const [SocialMedia, setSocialMedia] = useState("instagram");
+    const [Error, setError] = useState([]);
+
+    function handleSubmit(event) {
+        event.preventDefault();
+        console.log({
+            Name,
+            Email,
+            Phone,
+            SocialMedia
+        })
+    }
+
+    function HandleChangeName(event) {
+        setName(event.target.value);
+        if(!event.target.value) {
+            setError((prev) => [
+                ...prev,
+                {
+                    field: "Name",
+                    message: "O nome é obrigatório"
+                }
+            ])
+        } else {
+            setName(event.target.value);
+            setError((prev) => prev.filter(error => error.field !== "Name"));
+        }
+    }
+
+    console.log(Error)
     return (
-        <Form>
-            <FormGroup error="O formato é invalido">
-                <Input placeholder="Nome" />
+
+        <Form onSubmit={handleSubmit}>
+            <FormGroup>
+                <Input placeholder="Nome" value={Name} onChange={HandleChangeName} />
             </FormGroup>
 
             <FormGroup>
-                <Input placeholder="E-mail" />
+                <Input placeholder="E-mail" value={Email} onChange={(event) => setEmail(event.target.value)} />
             </FormGroup>
 
             <FormGroup>
-                <Input placeholder="Telefone" />
+                <Input placeholder="Telefone" value={Phone} onChange={(event) => setPhone(event.target.value)} />
             </FormGroup>
 
             <FormGroup>
-                <Select>
+                <Select value={SocialMedia} onChange={(event) => setSocialMedia(event.target.value)}>
                     <option value="instagram">Instagram</option>
                     <option value="facebook">Facebook</option>
                     <option value="linkedin">Linkedin</option>
