@@ -16,6 +16,10 @@ export const Input = styled.input`
         border-color: ${props => props.theme.colors.primary.main};
     }
 
+    ${({error, theme}) => error && css`
+        color: ${theme.colors.danger.main};
+        border-color: ${theme.colors.danger.main} !important;
+    `}
 `
 export const Select = styled.select`
     width: 100%;

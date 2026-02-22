@@ -69,16 +69,28 @@ export default function ContactForm({ LabelButton }) {
 
     }
 
-    console.log(Error)
+    function GetErrorMenssagemByFildName(FildName){
+        return Error.find((error) => error.field === FildName)?.message
+    }
+    console.log(GetErrorMenssagemByFildName('Email'))
+    // console.log(Error)
     return (
 
         <Form onSubmit={handleSubmit}>
-            <FormGroup>
-                <Input placeholder="Nome" value={Name} onChange={HandleChangeName} />
+            <FormGroup error={GetErrorMenssagemByFildName('Name')}>
+                <Input
+                placeholder="Nome"
+                value={Name}
+                onChange={HandleChangeName}
+                error={GetErrorMenssagemByFildName('Name')}/>
             </FormGroup>
 
-            <FormGroup>
-                <Input placeholder="E-mail" value={Email} onChange={HandleChangeEmail} />
+            <FormGroup error={GetErrorMenssagemByFildName('Email')}>
+                <Input
+                placeholder="E-mail"
+                value={Email}
+                onChange={HandleChangeEmail}
+                error={GetErrorMenssagemByFildName('Email')} />
             </FormGroup>
 
             <FormGroup>
