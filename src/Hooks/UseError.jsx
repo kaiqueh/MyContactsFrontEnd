@@ -30,5 +30,5 @@ export default function useError() {
         return Error.find((error) => error.field === FildName)?.message
     }
 
-    return {SetErrors, RemoveError, GetErrorMenssagemByFildName }
+    return {SetErrors, RemoveError, GetErrorMenssagemByFildName, Error }
 }

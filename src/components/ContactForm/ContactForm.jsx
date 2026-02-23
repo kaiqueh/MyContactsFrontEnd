@@ -1,6 +1,7 @@
 import { useState } from "react"
 import isEmailValid from "../../utils/IsEmailValid"
 import useError from "../../Hooks/UseError"
+import formatPhone from "../../utils/FormatPhone"
 
 import { Form } from "./styled"
 
@@ -15,7 +16,9 @@ export default function ContactForm({ LabelButton }) {
     const [Email, setEmail] = useState("");
     const [Phone, setPhone] = useState("");
     const [SocialMedia, setSocialMedia] = useState("instagram");
-    const { GetErrorMenssagemByFildName, SetErrors, RemoveError } = useError()
+    const { GetErrorMenssagemByFildName, SetErrors, RemoveError, Error } = useError()
+
+    const IsValidForm = Name && Error.length === 0
 
     function handleSubmit(event) {
         event.preventDefault();
@@ -70,6 +73,7 @@ export default function ContactForm({ LabelButton }) {
 
             <FormGroup error={GetErrorMenssagemByFildName('Email')}>
                 <Input
+                    type="email"
                     placeholder="E-mail"
                     value={Email}
                     onChange={HandleChangeEmail}
@@ -77,7 +81,7 @@ export default function ContactForm({ LabelButton }) {
             </FormGroup>
 
             <FormGroup>
-                <Input placeholder="Telefone" value={Phone} onChange={(event) => setPhone(event.target.value)} />
+                <Input placeholder="Telefone" value={Phone} onChange={(event) => setPhone(formatPhone(event.target.value))} />
             </FormGroup>
 
             <FormGroup>
@@ -90,7 +94,7 @@ export default function ContactForm({ LabelButton }) {
             </FormGroup>
 
             <FormGroup>
-                <Button type="submit">{LabelButton}</Button>
+                <Button type="submit" disabled={!IsValidForm}>{LabelButton}</Button>
             </FormGroup>
 
         </Form>
