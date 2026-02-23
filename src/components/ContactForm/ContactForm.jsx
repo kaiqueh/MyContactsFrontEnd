@@ -1,5 +1,6 @@
 import { useState } from "react"
 import isEmailValid from "../../utils/IsEmailValid"
+import useError from "../../Hooks/UseError"
 
 import { Form } from "./styled"
 
@@ -14,7 +15,7 @@ export default function ContactForm({ LabelButton }) {
     const [Email, setEmail] = useState("");
     const [Phone, setPhone] = useState("");
     const [SocialMedia, setSocialMedia] = useState("instagram");
-    const [Error, setError] = useState([]);
+    const { GetErrorMenssagemByFildName, SetErrors, RemoveError } = useError()
 
     function handleSubmit(event) {
         event.preventDefault();
@@ -28,69 +29,51 @@ export default function ContactForm({ LabelButton }) {
 
     function HandleChangeName(event) {
         setName(event.target.value);
-        if(!event.target.value) {
-            setError((prev) => [
-                ...prev,
-                {
-                    field: "Name",
-                    message: "O nome é obrigatório"
-                }
-            ])
+        if (!event.target.value) {
+            SetErrors({
+                field: "Name",
+                message: "O nome é obrigatório"
+            })
         } else {
             setName(event.target.value);
-            setError((prev) => prev.filter(error => error.field !== "Name"));
+            RemoveError('Name')
         }
     }
 
 
     function HandleChangeEmail(event) {
         setEmail(event.target.value);
-        if(!isEmailValid(event.target.value) && event.target.value) {
+        if (!isEmailValid(event.target.value) && event.target.value) {
 
-        const ErrorAlreadyExists = Error.find((error) => error.field === "Email")
-
-        if(ErrorAlreadyExists){
-            return;
-        }
-
-        if(event.target.value )
-            setError((prev) => [
-                ...prev,
-                {
-                    field: "Email",
-                    message: "O e-mail é inválido"
-                }
-            ])
+            SetErrors({
+                field: "Email",
+                message: "O e-mail é inválido"
+            })
         } else {
-            setError((prev) => prev.filter(error => error.field !== "Email"));
+            RemoveError('Email')
         }
 
 
 
     }
 
-    function GetErrorMenssagemByFildName(FildName){
-        return Error.find((error) => error.field === FildName)?.message
-    }
-    console.log(GetErrorMenssagemByFildName('Email'))
-    // console.log(Error)
     return (
 
         <Form onSubmit={handleSubmit}>
             <FormGroup error={GetErrorMenssagemByFildName('Name')}>
                 <Input
-                placeholder="Nome"
-                value={Name}
-                onChange={HandleChangeName}
-                error={GetErrorMenssagemByFildName('Name')}/>
+                    placeholder="Nome"
+                    value={Name}
+                    onChange={HandleChangeName}
+                    error={GetErrorMenssagemByFildName('Name')} />
             </FormGroup>
 
             <FormGroup error={GetErrorMenssagemByFildName('Email')}>
                 <Input
-                placeholder="E-mail"
-                value={Email}
-                onChange={HandleChangeEmail}
-                error={GetErrorMenssagemByFildName('Email')} />
+                    placeholder="E-mail"
+                    value={Email}
+                    onChange={HandleChangeEmail}
+                    error={GetErrorMenssagemByFildName('Email')} />
             </FormGroup>
 
             <FormGroup>
