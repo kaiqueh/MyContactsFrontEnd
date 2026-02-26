@@ -1,9 +1,10 @@
 import { Container, Header, ListContainer, Cardlist, InputSearchContainer }
-from "./styled.jsx";
+    from "./styled.jsx";
 import arrow from "../../assets/images/icons/arrow.svg";
 import edit from "../../assets/images/icons/edit.svg"
 import trash from "../../assets/images/icons/trash.svg"
 import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
 // import  ModalComponent  from "../../components/modal/modal.jsx";
 // import Loader from "../../components/Loader/Loader.jsx";
 
@@ -11,18 +12,34 @@ import { Link } from "react-router-dom";
 
 
 export default function Home() {
+
+    const [ContactForm, SetContact] = useState([])
+
+    useEffect(async() => {
+        fetch('http://localhost:3001/contacts')
+            .then(async (res) => {
+                const resposta = await res.json()
+                SetContact(resposta)
+                // SetContact([])
+
+            }).catch((error) => {
+                console.log(error)
+            })
+
+    },[])
+
+    console.log(ContactForm)
     return (
         <Container>
-
-            {/* <ModalComponent danger/> */}
-            {/* <Loader /> */}
 
             <InputSearchContainer>
                 <input type="text" placeholder="Pesquisar contato..." />
             </InputSearchContainer>
 
             <Header>
-                <strong>3 contatos</strong>
+                <strong>{ContactForm.length}
+                {ContactForm.length > 1 ? ' Contatos' : ' contato'}
+                </strong>
                 <Link to="/new">Novo Contato</Link>
             </Header>
 
@@ -36,17 +53,18 @@ export default function Home() {
                     </button>
                 </header>
 
-                <Cardlist>
+                {ContactForm.map((contact) => (
+                    <Cardlist key={contact.id}>
                     <div className="info">
                         <div className="contact-name">
-                            <strong>Kaique Reis</strong>
-                            <small>Instagram</small>
+                            <strong>{contact.name}</strong>
+                            <small>{contact.category_name}</small>
                         </div>
-                        <span>kaiquefps555@hotmail.com</span>
-                        <span>(11) 9999-9999</span>
+                        <span>{contact.email}</span>
+                        <span>{contact.phone}</span>
                     </div>
                     <div className="actions">
-                        <Link to="/edit/123">
+                        <Link to={`/edit/${contact.id}`}>
                             <img src={edit} alt="edit" />
                         </Link>
                         <button type="button">
@@ -54,9 +72,13 @@ export default function Home() {
                         </button>
                     </div>
                 </Cardlist>
+                ))}
+
 
             </ListContainer>
 
         </Container>
+
     )
+
 }

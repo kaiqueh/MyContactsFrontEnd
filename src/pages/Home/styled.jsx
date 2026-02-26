@@ -72,6 +72,7 @@ export const Cardlist = styled.div`
     display: flex;
     align-items: center;
     justify-content: space-between;
+    margin-bottom: 16px;
     .info{
         .contact-name{
             display: flex;
