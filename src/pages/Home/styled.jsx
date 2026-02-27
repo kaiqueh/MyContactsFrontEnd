@@ -12,6 +12,7 @@ export const InputSearchContainer = styled.div`
     height: 50px;
     width: 100%;
     border: none;
+    outline: none;
     border-radius: 25px;
     padding: 0 16px;
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.04);
@@ -46,9 +47,8 @@ export const Header = styled.header`
     }
 
 `
-export const ListContainer = styled.div`
-    margin-top: 24px;
-    header {
+
+export const ListHeader = styled.header`
         button{
             margin-bottom: 8px;
             border: none;
@@ -58,16 +58,18 @@ export const ListContainer = styled.div`
         }
         span{
         color: ${props => props.theme.colors.primary.main};
-        /* font-weigh: bold; */
         margin-right: 8px
         }
 
         img{
-            transform: ${props => props.orderBy === 'ASC' ? 'rotate(180deg)' : 'rotate(0deg)' };
+            transform: ${props => props.orderBy === 'ASC' ? 'rotate(180deg)' : 'rotate(0deg)'};
             transition: transform 0.2s ease-in;
         }
 
-}
+`
+export const ListContainer = styled.div`
+    margin-top: 24px;
+
 `
 export const Cardlist = styled.div`
     background: #fff;

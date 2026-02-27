@@ -4,7 +4,8 @@ import arrow from "../../assets/images/icons/arrow.svg";
 import edit from "../../assets/images/icons/edit.svg"
 import trash from "../../assets/images/icons/trash.svg"
 import { Link } from "react-router-dom";
-import { useEffect, useState } from "react";
+import {useEffect, useState } from "react";
+import { ListHeader } from "./styled.jsx";
 // import  ModalComponent  from "../../components/modal/modal.jsx";
 // import Loader from "../../components/Loader/Loader.jsx";
 
@@ -15,6 +16,11 @@ export default function Home() {
 
     const [ContactForm, SetContact] = useState([])
     const [orderBy, SetOrderBy] = useState('ASC')
+    const [serchTerm, SetSerchTerm] = useState('')
+
+    const FilterdContact = ContactForm.filter((contact) => (
+        contact.name.toLowerCase().includes(serchTerm.toLowerCase())
+    ))
 
     useEffect(async() => {
         fetch(`http://localhost:3001/contacts?orderBy=${orderBy}`)
@@ -31,35 +37,43 @@ export default function Home() {
 
     function HandlerOrderBy(){
         SetOrderBy((prev) => prev === 'ASC' ? 'DESC' : 'ASC')
-        // console.log(orderBy)
     }
 
+    function HandleFilterName(event){
+        SetSerchTerm(event.target.value)
+    }
 
     return (
         <Container>
 
             <InputSearchContainer>
-                <input type="text" placeholder="Pesquisar contato..." />
+                <input
+                type="text"
+                placeholder="Pesquisar contato..."
+                onChange={HandleFilterName}
+                />
             </InputSearchContainer>
 
             <Header>
-                <strong>{ContactForm.length}
-                {ContactForm.length > 1 ? ' Contatos' : ' contato'}
+                <strong>{FilterdContact.length}
+                {FilterdContact.length > 1 ? ' Contatos' : ' contato'}
                 </strong>
                 <Link to="/new">Novo Contato</Link>
             </Header>
 
-            <ListContainer orderBy={orderBy} >
-                <header>
-                    <button type="button" onClick={HandlerOrderBy}>
+            <ListContainer>
+                <ListHeader $orderBy={orderBy}>
+                    {FilterdContact.length > 0 &&(
+                        <button type="button" onClick={HandlerOrderBy}>
                         <span>Nome</span>
                         <a href="/">
                             <img src={arrow} alt="Arrow" />
                         </a>
                     </button>
-                </header>
+                    ) }
+                </ListHeader>
 
-                {ContactForm.map((contact) => (
+                {FilterdContact.map((contact) => (
                     <Cardlist key={contact.id}>
                     <div className="info">
                         <div className="contact-name">
