@@ -62,6 +62,11 @@ export const ListContainer = styled.div`
         margin-right: 8px
         }
 
+        img{
+            transform: ${props => props.orderBy === 'ASC' ? 'rotate(180deg)' : 'rotate(0deg)' };
+            transition: transform 0.2s ease-in;
+        }
+
 }
 `
 export const Cardlist = styled.div`

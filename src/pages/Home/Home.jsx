@@ -14,9 +14,10 @@ import { useEffect, useState } from "react";
 export default function Home() {
 
     const [ContactForm, SetContact] = useState([])
+    const [orderBy, SetOrderBy] = useState('ASC')
 
     useEffect(async() => {
-        fetch('http://localhost:3001/contacts')
+        fetch(`http://localhost:3001/contacts?orderBy=${orderBy}`)
             .then(async (res) => {
                 const resposta = await res.json()
                 SetContact(resposta)
@@ -26,9 +27,14 @@ export default function Home() {
                 console.log(error)
             })
 
-    },[])
+    },[orderBy])
 
-    console.log(ContactForm)
+    function HandlerOrderBy(){
+        SetOrderBy((prev) => prev === 'ASC' ? 'DESC' : 'ASC')
+        // console.log(orderBy)
+    }
+
+
     return (
         <Container>
 
@@ -43,9 +49,9 @@ export default function Home() {
                 <Link to="/new">Novo Contato</Link>
             </Header>
 
-            <ListContainer>
+            <ListContainer orderBy={orderBy} >
                 <header>
-                    <button type="button">
+                    <button type="button" onClick={HandlerOrderBy}>
                         <span>Nome</span>
                         <a href="/">
                             <img src={arrow} alt="Arrow" />
