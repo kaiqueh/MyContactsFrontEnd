@@ -4,7 +4,7 @@ import arrow from "../../assets/images/icons/arrow.svg";
 import edit from "../../assets/images/icons/edit.svg"
 import trash from "../../assets/images/icons/trash.svg"
 import { Link } from "react-router-dom";
-import {useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { ListHeader } from "./styled.jsx";
 // import  ModalComponent  from "../../components/modal/modal.jsx";
 // import Loader from "../../components/Loader/Loader.jsx";
@@ -18,11 +18,12 @@ export default function Home() {
     const [orderBy, SetOrderBy] = useState('ASC')
     const [serchTerm, SetSerchTerm] = useState('')
 
-    const FilterdContact = ContactForm.filter((contact) => (
-        contact.name.toLowerCase().includes(serchTerm.toLowerCase())
-    ))
+    const FilterdContact = useMemo(() => ContactForm.filter((contact) => (
+            contact.name.toLowerCase().includes(serchTerm.toLowerCase())
+        ))
+    ,[serchTerm, ContactForm])
 
-    useEffect(async() => {
+    useEffect(async () => {
         fetch(`http://localhost:3001/contacts?orderBy=${orderBy}`)
             .then(async (res) => {
                 const resposta = await res.json()
@@ -33,13 +34,13 @@ export default function Home() {
                 console.log(error)
             })
 
-    },[orderBy])
+    }, [orderBy])
 
-    function HandlerOrderBy(){
+    function HandlerOrderBy() {
         SetOrderBy((prev) => prev === 'ASC' ? 'DESC' : 'ASC')
     }
 
-    function HandleFilterName(event){
+    function HandleFilterName(event) {
         SetSerchTerm(event.target.value)
     }
 
@@ -48,50 +49,50 @@ export default function Home() {
 
             <InputSearchContainer>
                 <input
-                type="text"
-                placeholder="Pesquisar contato..."
-                onChange={HandleFilterName}
+                    type="text"
+                    placeholder="Pesquisar contato..."
+                    onChange={HandleFilterName}
                 />
             </InputSearchContainer>
 
             <Header>
                 <strong>{FilterdContact.length}
-                {FilterdContact.length > 1 ? ' Contatos' : ' contato'}
+                    {FilterdContact.length > 1 ? ' Contatos' : ' contato'}
                 </strong>
                 <Link to="/new">Novo Contato</Link>
             </Header>
 
             <ListContainer>
                 <ListHeader $orderBy={orderBy}>
-                    {FilterdContact.length > 0 &&(
+                    {FilterdContact.length > 0 && (
                         <button type="button" onClick={HandlerOrderBy}>
-                        <span>Nome</span>
-                        <a href="/">
-                            <img src={arrow} alt="Arrow" />
-                        </a>
-                    </button>
-                    ) }
+                            <span>Nome</span>
+                            <a href="/">
+                                <img src={arrow} alt="Arrow" />
+                            </a>
+                        </button>
+                    )}
                 </ListHeader>
 
                 {FilterdContact.map((contact) => (
                     <Cardlist key={contact.id}>
-                    <div className="info">
-                        <div className="contact-name">
-                            <strong>{contact.name}</strong>
-                            <small>{contact.category_name}</small>
+                        <div className="info">
+                            <div className="contact-name">
+                                <strong>{contact.name}</strong>
+                                <small>{contact.category_name}</small>
+                            </div>
+                            <span>{contact.email}</span>
+                            <span>{contact.phone}</span>
                         </div>
-                        <span>{contact.email}</span>
-                        <span>{contact.phone}</span>
-                    </div>
-                    <div className="actions">
-                        <Link to={`/edit/${contact.id}`}>
-                            <img src={edit} alt="edit" />
-                        </Link>
-                        <button type="button">
-                            <img src={trash} alt="trash" />
-                        </button>
-                    </div>
-                </Cardlist>
+                        <div className="actions">
+                            <Link to={`/edit/${contact.id}`}>
+                                <img src={edit} alt="edit" />
+                            </Link>
+                            <button type="button">
+                                <img src={trash} alt="trash" />
+                            </button>
+                        </div>
+                    </Cardlist>
                 ))}
 
 
