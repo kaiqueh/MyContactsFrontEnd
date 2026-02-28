@@ -4,8 +4,9 @@ import arrow from "../../assets/images/icons/arrow.svg";
 import edit from "../../assets/images/icons/edit.svg"
 import trash from "../../assets/images/icons/trash.svg"
 import { Link } from "react-router-dom";
-import { useEffect, useState, useMemo } from "react";
+import { useEffect, useState, useMemo, use } from "react";
 import { ListHeader } from "./styled.jsx";
+import Loader from "../../components/Loader/Loader.jsx";
 // import  ModalComponent  from "../../components/modal/modal.jsx";
 // import Loader from "../../components/Loader/Loader.jsx";
 
@@ -17,21 +18,24 @@ export default function Home() {
     const [ContactForm, SetContact] = useState([])
     const [orderBy, SetOrderBy] = useState('ASC')
     const [serchTerm, SetSerchTerm] = useState('')
+    const [IsLoading, SetIsLoading] = useState(true)
 
     const FilterdContact = useMemo(() => ContactForm.filter((contact) => (
             contact.name.toLowerCase().includes(serchTerm.toLowerCase())
         ))
     ,[serchTerm, ContactForm])
 
+
+
     useEffect(async () => {
         fetch(`http://localhost:3001/contacts?orderBy=${orderBy}`)
             .then(async (res) => {
                 const resposta = await res.json()
                 SetContact(resposta)
-                // SetContact([])
-
             }).catch((error) => {
                 console.log(error)
+            }).finally(() => {
+                SetIsLoading(false)
             })
 
     }, [orderBy])
@@ -46,6 +50,7 @@ export default function Home() {
 
     return (
         <Container>
+            <Loader isloading={IsLoading}/>
 
             <InputSearchContainer>
                 <input
