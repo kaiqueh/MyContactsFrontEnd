@@ -4,7 +4,7 @@ import arrow from "../../assets/images/icons/arrow.svg";
 import edit from "../../assets/images/icons/edit.svg"
 import trash from "../../assets/images/icons/trash.svg"
 import { Link } from "react-router-dom";
-import { useEffect, useState, useMemo, use } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { ListHeader } from "./styled.jsx";
 import Loader from "../../components/Loader/Loader.jsx";
 // import  ModalComponent  from "../../components/modal/modal.jsx";
@@ -24,8 +24,6 @@ export default function Home() {
             contact.name.toLowerCase().includes(serchTerm.toLowerCase())
         ))
     ,[serchTerm, ContactForm])
-
-
 
     useEffect(async () => {
         fetch(`http://localhost:3001/contacts?orderBy=${orderBy}`)
@@ -68,7 +66,7 @@ export default function Home() {
             </Header>
 
             <ListContainer>
-                <ListHeader $orderBy={orderBy}>
+                <ListHeader orderBy={orderBy}>
                     {FilterdContact.length > 0 && (
                         <button type="button" onClick={HandlerOrderBy}>
                             <span>Nome</span>

@@ -64,6 +64,7 @@ export const ListHeader = styled.header`
         img{
             transform: ${props => props.orderBy === 'ASC' ? 'rotate(180deg)' : 'rotate(0deg)'};
             transition: transform 0.2s ease-in;
+            color: red;
         }
 
 `
