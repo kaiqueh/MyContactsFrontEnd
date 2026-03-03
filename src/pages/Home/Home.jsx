@@ -21,88 +21,92 @@ export default function Home() {
     const [IsLoading, SetIsLoading] = useState(true)
 
     const FilterdContact = useMemo(() => ContactForm.filter((contact) => (
-            contact.name.toLowerCase().includes(serchTerm.toLowerCase())
-        ))
-    ,[serchTerm, ContactForm])
+        contact.name.toLowerCase().includes(serchTerm.toLowerCase())
+    ))
+        , [serchTerm, ContactForm])
 
-    useEffect(async () => {
-        fetch(`http://localhost:3001/contacts?orderBy=${orderBy}`)
-            .then(async (res) => {
-                const resposta = await res.json()
-                SetContact(resposta)
-            }).catch((error) => {
-                console.log(error)
-            }).finally(() => {
+    useEffect(() => {
+        async function LoadContact() {
+            try{
+                SetIsLoading(true)
+                const response = await fetch(`http://localhost:3001/contacts?orderBy=${orderBy}`);
+                const json = await response.json()
+                SetContact(json)
+            }catch(error){
+                console.log('error', error)
+            }finally{
                 SetIsLoading(false)
-            })
+            }
+        }
 
-    }, [orderBy])
+        LoadContact()
+}, [orderBy])
 
-    function HandlerOrderBy() {
-        SetOrderBy((prev) => prev === 'ASC' ? 'DESC' : 'ASC')
-    }
+function HandlerOrderBy() {
+    SetOrderBy((prev) => prev === 'ASC' ? 'DESC' : 'ASC')
+}
 
-    function HandleFilterName(event) {
-        SetSerchTerm(event.target.value)
-    }
+function HandleFilterName(event) {
+    SetSerchTerm(event.target.value)
+}
 
-    return (
-        <Container>
-            <Loader isloading={IsLoading}/>
+return (
+    <Container>
+        <Loader isloading={IsLoading} />
 
-            <InputSearchContainer>
-                <input
-                    type="text"
-                    placeholder="Pesquisar contato..."
-                    onChange={HandleFilterName}
-                />
-            </InputSearchContainer>
+        <InputSearchContainer>
+            <input
+                type="text"
+                placeholder="Pesquisar contato..."
+                onChange={HandleFilterName}
+            />
+        </InputSearchContainer>
 
-            <Header>
-                <strong>{FilterdContact.length}
-                    {FilterdContact.length > 1 ? ' Contatos' : ' contato'}
-                </strong>
-                <Link to="/new">Novo Contato</Link>
-            </Header>
+        <Header>
+            <strong>{FilterdContact.length}
+                {FilterdContact.length > 1 ? ' Contatos' : ' contato'}
+            </strong>
+            <Link to="/new">Novo Contato</Link>
+        </Header>
 
-            <ListContainer>
-                <ListHeader orderBy={orderBy}>
-                    {FilterdContact.length > 0 && (
-                        <button type="button" onClick={HandlerOrderBy}>
-                            <span>Nome</span>
-                            <a href="/">
-                                <img src={arrow} alt="Arrow" />
-                            </a>
+        <ListContainer>
+            <ListHeader orderBy={orderBy}>
+                {FilterdContact.length > 0 && (
+                    <button type="button" onClick={HandlerOrderBy}>
+                        <span>Nome</span>
+                        <a href="/">
+                            <img src={arrow} alt="Arrow" />
+                        </a>
+                    </button>
+                )}
+            </ListHeader>
+
+            {FilterdContact.map((contact) => (
+                <Cardlist key={contact.id}>
+                    <div className="info">
+                        <div className="contact-name">
+                            <strong>{contact.name}</strong>
+                            <small>{contact.category_name}</small>
+                        </div>
+                        <span>{contact.email}</span>
+                        <span>{contact.phone}</span>
+                    </div>
+                    <div className="actions">
+                        <Link to={`/edit/${contact.id}`}>
+                            <img src={edit} alt="edit" />
+                        </Link>
+                        <button type="button">
+                            <img src={trash} alt="trash" />
                         </button>
-                    )}
-                </ListHeader>
-
-                {FilterdContact.map((contact) => (
-                    <Cardlist key={contact.id}>
-                        <div className="info">
-                            <div className="contact-name">
-                                <strong>{contact.name}</strong>
-                                <small>{contact.category_name}</small>
-                            </div>
-                            <span>{contact.email}</span>
-                            <span>{contact.phone}</span>
-                        </div>
-                        <div className="actions">
-                            <Link to={`/edit/${contact.id}`}>
-                                <img src={edit} alt="edit" />
-                            </Link>
-                            <button type="button">
-                                <img src={trash} alt="trash" />
-                            </button>
-                        </div>
-                    </Cardlist>
-                ))}
+                    </div>
+                </Cardlist>
+            ))}
 
 
-            </ListContainer>
+        </ListContainer>
 
-        </Container>
+    </Container>
 
-    )
+)
 
 }
