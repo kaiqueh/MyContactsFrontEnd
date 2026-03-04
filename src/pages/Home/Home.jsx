@@ -7,10 +7,10 @@ import { Link } from "react-router-dom";
 import { useEffect, useState, useMemo } from "react";
 import { ListHeader } from "./styled.jsx";
 import Loader from "../../components/Loader/Loader.jsx";
+import ContactService from "../../services/ContactService.jsx";
+
 // import  ModalComponent  from "../../components/modal/modal.jsx";
 // import Loader from "../../components/Loader/Loader.jsx";
-
-
 
 
 export default function Home() {
@@ -29,8 +29,7 @@ export default function Home() {
         async function LoadContact() {
             try{
                 SetIsLoading(true)
-                const response = await fetch(`http://localhost:3001/contacts?orderBy=${orderBy}`);
-                const json = await response.json()
+                const json = await ContactService.ListContact(orderBy)
                 SetContact(json)
             }catch(error){
                 console.log('error', error)
