@@ -6,8 +6,23 @@ class HttpClient {
 
     async get(path){
         const contacts = await fetch(`${this.baseUrl}${path}`)
-        return contacts.json()
+
+        let body = null
+        const contentType = contacts.headers.get('content-type')
+
+        if(contentType.includes('application/json')){
+            body =  await contacts.json()
+            return body
+        }
+
+        if(contacts.ok){
+            return body
+        }
+
+        throw Error(`${contacts.status} - ${contacts.statusText}`)
     }
+
+
 }
 
 export default HttpClient
