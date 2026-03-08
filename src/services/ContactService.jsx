@@ -7,7 +7,7 @@ class ContactService {
     }
 
     ListContact(orderBy = 'asc'){
-        return this.HttpClient.get(`/contacts?orderBy=${orderBy}`)
+        return this.HttpClient.get(`/contacts/121232?orderBy=${orderBy}`)
     }
 
     createContact(contact){
@@ -15,4 +15,3 @@ class ContactService {
     }
 }
 export default new ContactService
-

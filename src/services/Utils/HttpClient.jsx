@@ -1,25 +1,28 @@
+import APIError from "../../error/APIError"
 class HttpClient {
 
-    constructor(path){
+    constructor(path) {
         this.baseUrl = path
     }
 
-    async get(path){
+    async get(path) {
         const contacts = await fetch(`${this.baseUrl}${path}`)
 
+
+        console.log(contacts)
         let body = null
         const contentType = contacts.headers.get('content-type')
 
-        if(contentType.includes('application/json')){
-            body =  await contacts.json()
+        if (contentType.includes('application/json')) {
+            body = await contacts.json()
+        }
+
+        if (contacts.ok) {
             return body
         }
 
-        if(contacts.ok){
-            return body
-        }
+        throw new APIError(body, Response)
 
-        throw Error(`${contacts.status} - ${contacts.statusText}`)
     }
 
 

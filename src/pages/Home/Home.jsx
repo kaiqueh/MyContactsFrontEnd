@@ -32,7 +32,7 @@ export default function Home() {
                 const json = await ContactService.ListContact(orderBy)
                 SetContact(json)
             }catch(error){
-                console.log('error', error)
+                console.log(error)
             }finally{
                 SetIsLoading(false)
             }
