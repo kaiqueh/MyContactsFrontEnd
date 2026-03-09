@@ -22,9 +22,12 @@ export const InputSearchContainer = styled.div`
 
 export const Header = styled.header`
     display: flex;
-    justify-content: space-between;
+    justify-content: ${props => props.hasError === true ? 'flex-end' : 'space-between'};
     align-items: center;
     margin-top: 24px;
+    margin-bottom: 34px;
+    border-bottom: 2px solid ${props => props.theme.colors.grey[100]};
+    padding-bottom: 16px;
     strong {
         font-size: 24px;
     }
@@ -107,5 +110,21 @@ export const Cardlist = styled.div`
                     margin-left: 8px;
                 }
             }
+
+`
+
+export const ContainerErrror = styled.header`
+    display: flex;
+    align-items: center;
+    .mensagemError{
+        margin-left: 24px;
+        span{
+            color: ${props => props.theme.colors.danger.main};
+            font-size: 22px;
+            font-weight: bold;
+            margin-bottom: 8px;
+            display: block;
+        }
+    }
 
 `

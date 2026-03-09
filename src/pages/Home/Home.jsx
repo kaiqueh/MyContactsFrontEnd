@@ -1,13 +1,15 @@
-import { Container, Header, ListContainer, Cardlist, InputSearchContainer }
+import { Container, Header, ListContainer, Cardlist, InputSearchContainer, ContainerErrror }
     from "./styled.jsx";
 import arrow from "../../assets/images/icons/arrow.svg";
 import edit from "../../assets/images/icons/edit.svg"
 import trash from "../../assets/images/icons/trash.svg"
+import IconError from "../../assets/images/icons/IconError.svg"
 import { Link } from "react-router-dom";
 import { useEffect, useState, useMemo } from "react";
 import { ListHeader } from "./styled.jsx";
 import Loader from "../../components/Loader/Loader.jsx";
 import ContactService from "../../services/ContactService.jsx";
+import { Button } from "../../components/Input/Button.jsx";
 
 // import  ModalComponent  from "../../components/modal/modal.jsx";
 // import Loader from "../../components/Loader/Loader.jsx";
@@ -19,6 +21,7 @@ export default function Home() {
     const [orderBy, SetOrderBy] = useState('ASC')
     const [serchTerm, SetSerchTerm] = useState('')
     const [IsLoading, SetIsLoading] = useState(true)
+    const [hasError, SetHasError] = useState(false)
 
     const FilterdContact = useMemo(() => ContactForm.filter((contact) => (
         contact.name.toLowerCase().includes(serchTerm.toLowerCase())
@@ -27,85 +30,101 @@ export default function Home() {
 
     useEffect(() => {
         async function LoadContact() {
-            try{
+            try {
                 SetIsLoading(true)
                 const json = await ContactService.ListContact(orderBy)
                 SetContact(json)
-            }catch(error){
+            } catch (error) {
                 console.log(error)
-            }finally{
+                SetHasError(true)
+            } finally {
                 SetIsLoading(false)
             }
         }
 
         LoadContact()
-}, [orderBy])
+    }, [orderBy])
 
-function HandlerOrderBy() {
-    SetOrderBy((prev) => prev === 'ASC' ? 'DESC' : 'ASC')
-}
+    function HandlerOrderBy() {
+        SetOrderBy((prev) => prev === 'ASC' ? 'DESC' : 'ASC')
+    }
 
-function HandleFilterName(event) {
-    SetSerchTerm(event.target.value)
-}
+    function HandleFilterName(event) {
+        SetSerchTerm(event.target.value)
+    }
 
-return (
-    <Container>
-        <Loader isloading={IsLoading} />
+    return (
+        <Container>
+            <Loader isloading={IsLoading} />
 
-        <InputSearchContainer>
-            <input
-                type="text"
-                placeholder="Pesquisar contato..."
-                onChange={HandleFilterName}
-            />
-        </InputSearchContainer>
+            <InputSearchContainer>
+                <input
+                    type="text"
+                    placeholder="Pesquisar contato..."
+                    onChange={HandleFilterName}
+                />
+            </InputSearchContainer>
 
-        <Header>
-            <strong>{FilterdContact.length}
-                {FilterdContact.length > 1 ? ' Contatos' : ' contato'}
-            </strong>
-            <Link to="/new">Novo Contato</Link>
-        </Header>
-
-        <ListContainer>
-            <ListHeader orderBy={orderBy}>
-                {FilterdContact.length > 0 && (
-                    <button type="button" onClick={HandlerOrderBy}>
-                        <span>Nome</span>
-                        <a href="/">
-                            <img src={arrow} alt="Arrow" />
-                        </a>
-                    </button>
+            <Header hasError={hasError}>
+                {!hasError === true && (
+                <strong>{FilterdContact.length}
+                    {FilterdContact.length > 1 ? ' Contatos' : ' contato'}
+                </strong>
                 )}
-            </ListHeader>
+                <Link to="/new">Novo Contato</Link>
+            </Header>
 
-            {FilterdContact.map((contact) => (
-                <Cardlist key={contact.id}>
-                    <div className="info">
-                        <div className="contact-name">
-                            <strong>{contact.name}</strong>
-                            <small>{contact.category_name}</small>
-                        </div>
-                        <span>{contact.email}</span>
-                        <span>{contact.phone}</span>
-                    </div>
-                    <div className="actions">
-                        <Link to={`/edit/${contact.id}`}>
-                            <img src={edit} alt="edit" />
-                        </Link>
-                        <button type="button">
-                            <img src={trash} alt="trash" />
+             {hasError === true && (
+            <ContainerErrror>
+                <img src={IconError} alt="Icone de Erro" />
+                <div className="mensagemError">
+                    <span>
+                        Ocorreu um erro ao obter os seus Contatos!
+                    </span>
+                    <Button type="button">tentar novamente</Button>
+                </div>
+            </ContainerErrror>
+            )}
+
+
+            <ListContainer>
+                <ListHeader orderBy={orderBy}>
+                    {FilterdContact.length > 0 && (
+                        <button type="button" onClick={HandlerOrderBy}>
+                            <span>Nome</span>
+                            <a href="/">
+                                <img src={arrow} alt="Arrow" />
+                            </a>
                         </button>
-                    </div>
-                </Cardlist>
-            ))}
+                    )}
+                </ListHeader>
+
+                {FilterdContact.map((contact) => (
+                    <Cardlist key={contact.id}>
+                        <div className="info">
+                            <div className="contact-name">
+                                <strong>{contact.name}</strong>
+                                <small>{contact.category_name}</small>
+                            </div>
+                            <span>{contact.email}</span>
+                            <span>{contact.phone}</span>
+                        </div>
+                        <div className="actions">
+                            <Link to={`/edit/${contact.id}`}>
+                                <img src={edit} alt="edit" />
+                            </Link>
+                            <button type="button">
+                                <img src={trash} alt="trash" />
+                            </button>
+                        </div>
+                    </Cardlist>
+                ))}
 
 
-        </ListContainer>
+            </ListContainer>
 
-    </Container>
+        </Container>
 
-)
+    )
 
 }
