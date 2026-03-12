@@ -5,11 +5,12 @@ import edit from "../../assets/images/icons/edit.svg"
 import trash from "../../assets/images/icons/trash.svg"
 import IconError from "../../assets/images/icons/IconError.svg"
 import { Link } from "react-router-dom";
-import { useEffect, useState, useMemo } from "react";
+import { useEffect, useState, useMemo, useCallback } from "react";
 import { ListHeader } from "./styled.jsx";
 import Loader from "../../components/Loader/Loader.jsx";
 import ContactService from "../../services/ContactService.jsx";
 import { Button } from "../../components/Input/Button.jsx";
+
 
 // import  ModalComponent  from "../../components/modal/modal.jsx";
 // import Loader from "../../components/Loader/Loader.jsx";
@@ -28,20 +29,22 @@ export default function Home() {
     ))
         , [serchTerm, ContactForm])
 
-    useEffect(() => {
-        async function LoadContact() {
-            try {
-                SetIsLoading(true)
-                const json = await ContactService.ListContact(orderBy)
-                SetContact(json)
-            } catch (error) {
-                console.log(error)
-                SetHasError(true)
-            } finally {
-                SetIsLoading(false)
-            }
+    const LoadContact = useCallback(async () => {
+        try {
+            SetIsLoading(true)
+            const json = await ContactService.ListContact(orderBy)
+            SetHasError(false)
+            SetContact(json)
+        } catch (error) {
+            console.log(error)
+            SetHasError(true)
+        } finally {
+            SetIsLoading(false)
         }
+    }, [orderBy])
 
+
+    useEffect(() => {
         LoadContact()
     }, [orderBy])
 
@@ -51,6 +54,10 @@ export default function Home() {
 
     function HandleFilterName(event) {
         SetSerchTerm(event.target.value)
+    }
+
+    function HandlerTryAgain() {
+        LoadContact()
     }
 
     return (
@@ -65,30 +72,30 @@ export default function Home() {
                 />
             </InputSearchContainer>
 
-            <Header hasError={hasError}>
+            <Header $hasError={hasError}>
                 {!hasError === true && (
-                <strong>{FilterdContact.length}
-                    {FilterdContact.length > 1 ? ' Contatos' : ' contato'}
-                </strong>
+                    <strong>{FilterdContact.length}
+                        {FilterdContact.length > 1 ? ' Contatos' : ' contato'}
+                    </strong>
                 )}
                 <Link to="/new">Novo Contato</Link>
             </Header>
 
-             {hasError === true && (
-            <ContainerErrror>
-                <img src={IconError} alt="Icone de Erro" />
-                <div className="mensagemError">
-                    <span>
-                        Ocorreu um erro ao obter os seus Contatos!
-                    </span>
-                    <Button type="button">tentar novamente</Button>
-                </div>
-            </ContainerErrror>
+            {hasError === true && (
+                <ContainerErrror>
+                    <img src={IconError} alt="Icone de Erro" />
+                    <div className="mensagemError">
+                        <span>
+                            Ocorreu um erro ao obter os seus Contatos!
+                        </span>
+                        <Button type="button" onClick={HandlerTryAgain}>tentar novamente</Button>
+                    </div>
+                </ContainerErrror>
             )}
 
 
             <ListContainer>
-                <ListHeader orderBy={orderBy}>
+                <ListHeader $orderBy={orderBy}>
                     {FilterdContact.length > 0 && (
                         <button type="button" onClick={HandlerOrderBy}>
                             <span>Nome</span>

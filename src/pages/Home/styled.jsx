@@ -22,7 +22,7 @@ export const InputSearchContainer = styled.div`
 
 export const Header = styled.header`
     display: flex;
-    justify-content: ${props => props.hasError === true ? 'flex-end' : 'space-between'};
+    justify-content: ${props => props.$hasError === true ? 'flex-end' : 'space-between'};
     align-items: center;
     margin-top: 24px;
     margin-bottom: 34px;
@@ -65,7 +65,7 @@ export const ListHeader = styled.header`
         }
 
         img{
-            transform: ${props => props.orderBy === 'ASC' ? 'rotate(180deg)' : 'rotate(0deg)'};
+            transform: ${props => props.$orderBy === 'ASC' ? 'rotate(180deg)' : 'rotate(0deg)'};
             transition: transform 0.2s ease-in;
             color: red;
         }

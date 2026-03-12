@@ -8,8 +8,6 @@ class HttpClient {
     async get(path) {
         const contacts = await fetch(`${this.baseUrl}${path}`)
 
-
-        console.log(contacts)
         let body = null
         const contentType = contacts.headers.get('content-type')
 
@@ -21,7 +19,7 @@ class HttpClient {
             return body
         }
 
-        throw new APIError(body, Response)
+        throw new APIError(contacts, body)
 
     }
 
