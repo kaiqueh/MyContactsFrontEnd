@@ -144,3 +144,15 @@ export const EmptyListContainer = styled.div`
         color: ${props => props.theme.colors.primary.main};
     }
     `
+
+export const SearchNotFoundContainer = styled.div`
+    color: ${props => props.theme.colors.grey[200]};
+    display: flex;
+    align-items: center;
+
+    span{
+        margin-left: 24px;
+        word-break: break-word;
+    }
+`
+

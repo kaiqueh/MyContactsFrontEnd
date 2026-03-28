@@ -1,4 +1,11 @@
-import { Container, Header, ListContainer, Cardlist, InputSearchContainer, ContainerErrror, EmptyListContainer } from "./styled.jsx";
+import { Container,
+     Header,
+     ListContainer,
+     Cardlist,
+     InputSearchContainer,
+     ContainerErrror,
+     EmptyListContainer,
+     SearchNotFoundContainer } from "./styled.jsx";
 import arrow from "../../assets/images/icons/arrow.svg";
 import edit from "../../assets/images/icons/edit.svg"
 import trash from "../../assets/images/icons/trash.svg"
@@ -10,7 +17,7 @@ import { ListHeader } from "./styled.jsx";
 import Loader from "../../components/Loader/Loader.jsx";
 import ContactService from "../../services/ContactService.jsx";
 import { Button } from "../../components/Input/Button.jsx";
-
+import magnifierQuestion from "../../assets/images/icons/magnifierQuestion.svg";
 
 // import  ModalComponent  from "../../components/modal/modal.jsx";
 // import Loader from "../../components/Loader/Loader.jsx";
@@ -32,8 +39,8 @@ export default function Home() {
     const LoadContact = useCallback(async () => {
         try {
             SetIsLoading(true)
+            const json = await ContactService.ListContact(orderBy)
             // const json = []; await ContactService.ListContact(orderBy)
-            const json = []; await ContactService.ListContact(orderBy)
             SetHasError(false)
             SetContact(json)
         } catch (error) {
@@ -67,7 +74,6 @@ export default function Home() {
             <Loader $isloading={IsLoading} />
 
             {ContactForm.length !== 0 && (
-
                 <InputSearchContainer>
                     <input
                         type="text"
@@ -83,13 +89,14 @@ export default function Home() {
                         (ContactForm.length > 0 ?
                             'space-between' : 'center')
                 } $hasError={hasError}>
-                {(!hasError === true && ContactForm.length < 0) && (
+                {(!hasError === true && ContactForm.length > 0) && (
                     <strong>{FilterdContact.length}
                         {FilterdContact.length > 1 ? ' Contatos' : ' contato'}
                     </strong>
                 )}
                 <Link to="/new">Novo Contato</Link>
             </Header>
+
 
 
             {hasError && (
@@ -116,6 +123,13 @@ export default function Home() {
                         <p>Você ainda não tem nenhum contato cadastrado!
                             Clique no botão <strong>Novo Contato</strong> à cima para cadastrar o seu primeiro!</p>
                     </EmptyListContainer>
+                )}
+
+                {(ContactForm.length > 0 && FilterdContact.length < 1) && (
+                    <SearchNotFoundContainer>
+                        <img src={magnifierQuestion}/>
+                        <span> Nenhum resultado foi encontrado para {serchTerm}.</span>
+                    </SearchNotFoundContainer>
                 )}
 
                 <ListHeader $orderBy={orderBy}>
