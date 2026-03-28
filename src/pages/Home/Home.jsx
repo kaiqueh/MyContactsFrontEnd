@@ -1,9 +1,9 @@
-import { Container, Header, ListContainer, Cardlist, InputSearchContainer, ContainerErrror }
-    from "./styled.jsx";
+import { Container, Header, ListContainer, Cardlist, InputSearchContainer, ContainerErrror, EmptyListContainer } from "./styled.jsx";
 import arrow from "../../assets/images/icons/arrow.svg";
 import edit from "../../assets/images/icons/edit.svg"
 import trash from "../../assets/images/icons/trash.svg"
 import IconError from "../../assets/images/icons/IconError.svg"
+import Box from "../../assets/images/Box.svg";
 import { Link } from "react-router-dom";
 import { useEffect, useState, useMemo, useCallback } from "react";
 import { ListHeader } from "./styled.jsx";
@@ -32,7 +32,8 @@ export default function Home() {
     const LoadContact = useCallback(async () => {
         try {
             SetIsLoading(true)
-            const json = await ContactService.ListContact(orderBy)
+            // const json = []; await ContactService.ListContact(orderBy)
+            const json = []; await ContactService.ListContact(orderBy)
             SetHasError(false)
             SetContact(json)
         } catch (error) {
@@ -60,20 +61,29 @@ export default function Home() {
         LoadContact()
     }
 
+
     return (
         <Container>
-            <Loader isloading={IsLoading} />
+            <Loader $isloading={IsLoading} />
 
-            <InputSearchContainer>
-                <input
-                    type="text"
-                    placeholder="Pesquisar contato..."
-                    onChange={HandleFilterName}
-                />
-            </InputSearchContainer>
+            {ContactForm.length !== 0 && (
 
-            <Header $hasError={hasError}>
-                {!hasError === true && (
+                <InputSearchContainer>
+                    <input
+                        type="text"
+                        placeholder="Pesquisar contato..."
+                        onChange={HandleFilterName}
+                    />
+                </InputSearchContainer>
+            )}
+
+            <Header
+                $justifyContent={
+                    hasError ? 'flex-end' :
+                        (ContactForm.length > 0 ?
+                            'space-between' : 'center')
+                } $hasError={hasError}>
+                {(!hasError === true && ContactForm.length < 0) && (
                     <strong>{FilterdContact.length}
                         {FilterdContact.length > 1 ? ' Contatos' : ' contato'}
                     </strong>
@@ -81,20 +91,33 @@ export default function Home() {
                 <Link to="/new">Novo Contato</Link>
             </Header>
 
-            {hasError === true && (
-                <ContainerErrror>
-                    <img src={IconError} alt="Icone de Erro" />
-                    <div className="mensagemError">
-                        <span>
-                            Ocorreu um erro ao obter os seus Contatos!
-                        </span>
-                        <Button type="button" onClick={HandlerTryAgain}>tentar novamente</Button>
-                    </div>
-                </ContainerErrror>
+
+            {hasError && (
+                <>
+                    <ContainerErrror>
+                        <img src={IconError} alt="Icone de Erro" />
+                        <div className="mensagemError">
+                            <span>
+                                Ocorreu um erro ao obter os seus Contatos!
+                            </span>
+                            <Button type="button" onClick={HandlerTryAgain}>tentar novamente</Button>
+                        </div>
+                    </ContainerErrror>
+                </>
+
             )}
 
 
             <ListContainer>
+
+                {ContactForm.length < 1 && (
+                    <EmptyListContainer>
+                        <img src={Box} alt="Icone de Erro" />
+                        <p>Você ainda não tem nenhum contato cadastrado!
+                            Clique no botão <strong>Novo Contato</strong> à cima para cadastrar o seu primeiro!</p>
+                    </EmptyListContainer>
+                )}
+
                 <ListHeader $orderBy={orderBy}>
                     {FilterdContact.length > 0 && (
                         <button type="button" onClick={HandlerOrderBy}>

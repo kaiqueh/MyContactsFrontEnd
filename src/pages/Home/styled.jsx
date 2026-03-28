@@ -22,7 +22,7 @@ export const InputSearchContainer = styled.div`
 
 export const Header = styled.header`
     display: flex;
-    justify-content: ${props => props.$hasError === true ? 'flex-end' : 'space-between'};
+    justify-content: ${props => props.$hasError ? 'flex-end' : (props.$justifyContent || 'center')};
     align-items: center;
     margin-top: 24px;
     margin-bottom: 34px;
@@ -128,3 +128,19 @@ export const ContainerErrror = styled.header`
     }
 
 `
+
+export const EmptyListContainer = styled.div`
+    display: flex;
+    margin-top: 16px;
+    align-items: center;
+    flex-direction: column;
+
+    p{
+        color: ${props => props.theme.colors.grey[200]};
+        margin-top: 16px;
+        text-align: center;
+    }
+    strong{
+        color: ${props => props.theme.colors.primary.main};
+    }
+    `
