@@ -1,9 +1,10 @@
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import isEmailValid from "../../utils/IsEmailValid"
 import useError from "../../Hooks/UseError"
 import formatPhone from "../../utils/FormatPhone"
 
 import { Form } from "./styled"
+import CategoryService from "../../services/CategoryService"
 
 import FormGroup from "../FormGroup/formGroup"
 import { Input } from "../Input/input"
@@ -16,7 +17,18 @@ export default function ContactForm({ LabelButton }) {
     const [Email, setEmail] = useState("");
     const [Phone, setPhone] = useState("");
     const [SocialMedia, setSocialMedia] = useState("instagram");
+    const [category, setcategory] = useState([])
     const { GetErrorMenssagemByFildName, SetErrors, RemoveError, Error } = useError()
+
+    useEffect( () => {
+        async function LoadCategories(){
+            let data = await CategoryService.ListCategories();
+            setcategory(data)
+
+        }
+
+        LoadCategories()
+    }, [])
 
     const IsValidForm = Name && Error.length === 0
 
@@ -86,10 +98,10 @@ export default function ContactForm({ LabelButton }) {
 
             <FormGroup>
                 <Select value={SocialMedia} onChange={(event) => setSocialMedia(event.target.value)}>
-                    <option value="instagram">Instagram</option>
-                    <option value="facebook">Facebook</option>
-                    <option value="linkedin">Linkedin</option>
-                    <option value="twitter">Twitter</option>
+                    <option value="instagram">Sem Categoria</option>
+                    {category.map((category) => (
+                        <option key={category.id} value={category.id}> {category.name}</option>
+                    ))}
                 </Select>
             </FormGroup>
 
