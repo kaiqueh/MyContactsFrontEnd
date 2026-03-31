@@ -1,5 +1,6 @@
 import ReactDom from "react-dom";
 import { Overlay } from "./styled.jsx";
+import Spinner from "../spinner/spinner.jsx";
 
 export default function Loader({ isloading }) {
 
@@ -8,7 +9,7 @@ export default function Loader({ isloading }) {
     }
     return ReactDom.createPortal(
         <Overlay>
-            <div className="loader"></div>
+            <Spinner/>
         </Overlay>,
         document.getElementById("loader-root")
     )

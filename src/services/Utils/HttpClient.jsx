@@ -1,4 +1,5 @@
 import APIError from "../../error/APIError"
+import { delay } from "../../utils/Delay"
 class HttpClient {
 
     constructor(path) {
@@ -7,6 +8,8 @@ class HttpClient {
 
     async get(path) {
         const contacts = await fetch(`${this.baseUrl}${path}`)
+
+        // await delay(500)
 
         let body = null
         const contentType = contacts.headers.get('content-type')

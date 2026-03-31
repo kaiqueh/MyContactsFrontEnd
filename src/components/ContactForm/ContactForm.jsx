@@ -19,12 +19,16 @@ export default function ContactForm({ LabelButton }) {
     const [SocialMedia, setSocialMedia] = useState("instagram");
     const [category, setcategory] = useState([])
     const { GetErrorMenssagemByFildName, SetErrors, RemoveError, Error } = useError()
+    const [isloadingCategory, setisloadingCategory] = useState(true)
 
-    useEffect( () => {
-        async function LoadCategories(){
+    useEffect(() => {
+        async function LoadCategories() {
+            try{
             let data = await CategoryService.ListCategories();
             setcategory(data)
-
+            }catch{}finally{
+                setisloadingCategory(false)
+            }
         }
 
         LoadCategories()
@@ -96,8 +100,8 @@ export default function ContactForm({ LabelButton }) {
                 <Input placeholder="Telefone" value={Phone} onChange={(event) => setPhone(formatPhone(event.target.value))} />
             </FormGroup>
 
-            <FormGroup>
-                <Select value={SocialMedia} onChange={(event) => setSocialMedia(event.target.value)}>
+            <FormGroup isloading={isloadingCategory}>
+                <Select disabled={isloadingCategory} value={SocialMedia} onChange={(event) => setSocialMedia(event.target.value)}>
                     <option value="instagram">Sem Categoria</option>
                     {category.map((category) => (
                         <option key={category.id} value={category.id}> {category.name}</option>

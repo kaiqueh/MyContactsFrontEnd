@@ -1,9 +1,17 @@
-import  { Container } from "./styled.jsx";
+import { Container } from "./styled.jsx";
+import Spinner from "../spinner/spinner.jsx";
+import Loader from "../Loader/Loader.jsx";
 
-export default function FormGroup({ children, error }) {
+export default function FormGroup({ children, error, isloading }) {
     return (
         <Container>
-            {children}
+            <Loader />
+            <div className="form-itens">
+                {children}
+                {isloading && (
+                    <div className="loader"> <Spinner size={16} /></div>
+                )}
+            </div>
             {error && <span>{error}</span>}
         </Container>
     )
