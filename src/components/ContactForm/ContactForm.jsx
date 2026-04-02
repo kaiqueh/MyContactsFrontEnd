@@ -20,6 +20,7 @@ export default function ContactForm({ LabelButton, onsubmit }) {
     const [category, setcategory] = useState([])
     const { GetErrorMenssagemByFildName, SetErrors, RemoveError, Error } = useError()
     const [isloadingCategory, setisloadingCategory] = useState(true)
+    const [IsSubmitting, SetIsSubmitting] = useState(false)
 
     useEffect(() => {
         async function LoadCategories() {
@@ -36,14 +37,15 @@ export default function ContactForm({ LabelButton, onsubmit }) {
 
     const IsValidForm = Name && Error.length === 0
 
-    function handleSubmit(event) {
+    async function handleSubmit(event) {
         event.preventDefault();
-        onsubmit({
+        await onsubmit({
             Name,
             Email,
             Phone,
             SocialMedia
         })
+        SetIsSubmitting(true)
     }
 
     function HandleChangeName(event) {

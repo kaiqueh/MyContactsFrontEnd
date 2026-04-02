@@ -1,5 +1,5 @@
 import APIError from "../../error/APIError"
-import { delay } from "../../utils/Delay"
+// import { delay } from "../../utils/Delay"
 class HttpClient {
 
     constructor(path) {
@@ -7,12 +7,12 @@ class HttpClient {
     }
 
     async get(path) {
-        this.MakeRequest(path)
+        return this.MakeRequest(path, {method: 'GET'})
 
     }
 
     async post(path, body) {
-        this.MakeRequest(path, {
+        return this.MakeRequest(path, {
             method: 'POST',
             body
         })
@@ -24,16 +24,14 @@ class HttpClient {
         const headers = new Headers()
 
         if(Options.body){
-            headers.appeend('content-type', 'application/json');
-            }
+            headers.append('content-type', 'application/json');
+        }
 
 
         const contacts = await fetch(`${this.baseUrl}${path}`, {
             method: Options.method,
             body: JSON.stringify(Options.body),
-            headers: {
-                'Content-Type': 'application/json'
-            }
+            headers,
         })
 
         let responsebody = null
