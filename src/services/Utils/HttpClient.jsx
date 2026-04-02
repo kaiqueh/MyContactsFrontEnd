@@ -7,34 +7,30 @@ class HttpClient {
     }
 
     async get(path) {
-        const contacts = await fetch(`${this.baseUrl}${path}`)
-
-        // await delay(500)
-
-        let body = null
-        const contentType = contacts.headers.get('content-type')
-
-        if (contentType.includes('application/json')) {
-            body = await contacts.json()
-        }
-
-        if (contacts.ok) {
-            return body
-        }
-
-        throw new APIError(contacts, body)
+        this.MakeRequest(path)
 
     }
 
     async post(path, body) {
-
-        const headers = new Headers({
-            'content-type': 'application/json'
+        this.MakeRequest(path, {
+            method: 'POST',
+            body
         })
 
+    }
+
+    async MakeRequest(path, Options) {
+
+        const headers = new Headers()
+
+        if(Options.body){
+            headers.appeend('content-type', 'application/json');
+            }
+
+
         const contacts = await fetch(`${this.baseUrl}${path}`, {
-            method: 'POST',
-            body: JSON.stringify(body),
+            method: Options.method,
+            body: JSON.stringify(Options.body),
             headers: {
                 'Content-Type': 'application/json'
             }
@@ -54,6 +50,7 @@ class HttpClient {
         throw new APIError(contacts, responsebody)
 
     }
+
 
 
 
