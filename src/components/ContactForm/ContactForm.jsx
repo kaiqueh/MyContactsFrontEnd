@@ -11,7 +11,7 @@ import { Input } from "../Input/input"
 import { Select } from "../Input/input"
 import { Button } from "../Input/Button"
 
-export default function ContactForm({ LabelButton }) {
+export default function ContactForm({ LabelButton, onsubmit }) {
 
     const [Name, setName] = useState("");
     const [Email, setEmail] = useState("");
@@ -38,7 +38,7 @@ export default function ContactForm({ LabelButton }) {
 
     function handleSubmit(event) {
         event.preventDefault();
-        console.log({
+        onsubmit({
             Name,
             Email,
             Phone,
