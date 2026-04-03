@@ -1,5 +1,5 @@
 import APIError from "../../error/APIError"
-// import { delay } from "../../utils/Delay"
+import { delay } from "../../utils/Delay"
 class HttpClient {
 
     constructor(path) {
@@ -21,6 +21,7 @@ class HttpClient {
 
     async MakeRequest(path, Options) {
 
+        await delay(1000)
         const headers = new Headers()
 
         if(Options.body){

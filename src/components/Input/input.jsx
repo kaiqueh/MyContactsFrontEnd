@@ -20,6 +20,12 @@ export const Input = styled.input`
         color: ${theme.colors.danger.main};
         border-color: ${theme.colors.danger.main} !important;
     `}
+
+    &[disabled]{
+        background-color: ${props => props.theme.colors.grey[100]};
+        border-color: ${props => props.theme.colors.grey[200]};
+    }
+
 `
 export const Select = styled.select`
     width: 100%;

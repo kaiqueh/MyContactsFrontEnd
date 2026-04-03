@@ -13,6 +13,9 @@ export const Button = styled.button`
     font-size: 16px;
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.04);
     transition: all 0.2s ease-in-out;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
     &:hover{
         background-color: ${props => props.theme.colors.primary.dark};

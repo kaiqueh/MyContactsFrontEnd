@@ -10,6 +10,7 @@ import FormGroup from "../FormGroup/formGroup"
 import { Input } from "../Input/input"
 import { Select } from "../Input/input"
 import { Button } from "../Input/Button"
+import Spinner from "../spinner/spinner"
 
 export default function ContactForm({ LabelButton, onsubmit }) {
 
@@ -39,13 +40,16 @@ export default function ContactForm({ LabelButton, onsubmit }) {
 
     async function handleSubmit(event) {
         event.preventDefault();
+
+        SetIsSubmitting(true)
+
         await onsubmit({
             Name,
             Email,
             Phone,
             SocialMedia
         })
-        SetIsSubmitting(true)
+        SetIsSubmitting(false)
     }
 
     function HandleChangeName(event) {
@@ -86,7 +90,8 @@ export default function ContactForm({ LabelButton, onsubmit }) {
                     placeholder="Nome"
                     value={Name}
                     onChange={HandleChangeName}
-                    error={GetErrorMenssagemByFildName('Name')} />
+                    error={GetErrorMenssagemByFildName('Name')}
+                    disabled={IsSubmitting} />
             </FormGroup>
 
             <FormGroup error={GetErrorMenssagemByFildName('Email')}>
@@ -95,11 +100,16 @@ export default function ContactForm({ LabelButton, onsubmit }) {
                     placeholder="E-mail"
                     value={Email}
                     onChange={HandleChangeEmail}
-                    error={GetErrorMenssagemByFildName('Email')} />
+                    error={GetErrorMenssagemByFildName('Email')}
+                    disabled={IsSubmitting}/>
             </FormGroup>
 
             <FormGroup>
-                <Input placeholder="Telefone" value={Phone} onChange={(event) => setPhone(formatPhone(event.target.value))} />
+                <Input placeholder="Telefone"
+                 value={Phone}
+                 onChange={(event) => setPhone(formatPhone(event.target.value))}
+                 disabled={IsSubmitting}
+                 />
             </FormGroup>
 
             <FormGroup isloading={isloadingCategory}>
@@ -112,7 +122,9 @@ export default function ContactForm({ LabelButton, onsubmit }) {
             </FormGroup>
 
             <FormGroup>
-                <Button type="submit" disabled={!IsValidForm}>{LabelButton}</Button>
+                <Button type="submit" disabled={!IsValidForm || IsSubmitting}>
+                    {!IsSubmitting && LabelButton}
+                    {IsSubmitting && <Spinner size={16}/>}</Button>
             </FormGroup>
 
         </Form>
