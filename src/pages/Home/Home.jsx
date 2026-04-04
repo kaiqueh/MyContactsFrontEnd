@@ -16,7 +16,7 @@ import { useEffect, useState, useMemo, useCallback } from "react";
 import { ListHeader } from "./styled.jsx";
 import Loader from "../../components/Loader/Loader.jsx";
 import ContactService from "../../services/ContactService.jsx";
-import { Button } from "../../components/Input/Button.jsx";
+import { Button } from "../../components/Button/Button.jsx";
 import magnifierQuestion from "../../assets/images/icons/magnifierQuestion.svg";
 
 // import  ModalComponent  from "../../components/modal/modal.jsx";

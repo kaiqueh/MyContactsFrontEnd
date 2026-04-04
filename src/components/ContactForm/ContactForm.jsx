@@ -9,7 +9,7 @@ import CategoryService from "../../services/CategoryService"
 import FormGroup from "../FormGroup/formGroup"
 import { Input } from "../Input/input"
 import { Select } from "../Input/input"
-import { Button } from "../Input/Button"
+import { Button } from "../Button/Button.jsx"
 import Spinner from "../spinner/spinner"
 
 export default function ContactForm({ LabelButton, onsubmit }) {
@@ -49,7 +49,9 @@ export default function ContactForm({ LabelButton, onsubmit }) {
             Phone,
             SocialMedia
         })
+
         SetIsSubmitting(false)
+
     }
 
     function HandleChangeName(event) {
@@ -122,9 +124,12 @@ export default function ContactForm({ LabelButton, onsubmit }) {
             </FormGroup>
 
             <FormGroup>
-                <Button type="submit" disabled={!IsValidForm || IsSubmitting}>
-                    {!IsSubmitting && LabelButton}
-                    {IsSubmitting && <Spinner size={16}/>}</Button>
+                <Button
+                type="button"
+                isloading={IsSubmitting}
+                disabled={!IsValidForm}>
+                    {LabelButton}
+                </Button>
             </FormGroup>
 
         </Form>
