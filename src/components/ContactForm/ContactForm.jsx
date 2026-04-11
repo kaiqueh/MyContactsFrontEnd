@@ -125,7 +125,7 @@ export default function ContactForm({ LabelButton, onsubmit }) {
 
             <FormGroup>
                 <Button
-                type="button"
+                type="onsubmit"
                 isloading={IsSubmitting}
                 disabled={!IsValidForm}>
                     {LabelButton}

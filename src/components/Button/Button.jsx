@@ -1,7 +1,7 @@
 import Spinner from "../spinner/spinner.jsx";
 import {StyledButton} from "./styled.jsx";
 
-export function Button({children, isloading, type = "button", disabled}) {
+export function Button({children, isloading, type = "onsubmit", disabled}) {
     return(
         <StyledButton type={type} disabled={isloading || disabled  }>
             {!isloading && children}
