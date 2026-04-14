@@ -12,6 +12,11 @@ export default {
         200: '#bcbcbc',
         100: '#e5e5e5'
     },
+    success: {
+      main: '#51CF66',
+      dark: '#40C057',
+      light: '#69DB7C'
+    },
     danger: {
     main: '#FC5050',
     dark: '#F63131',

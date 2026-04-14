@@ -1,29 +1,27 @@
 import { useEffect, useState } from "react";
 import { Container } from "./styled"
 import { ToastMenssager } from "../ToastMenssager/ToastMensager";
+import {toastEventManager} from "../../../utils/Toast";
 
 export function ToastContainer({ children }) {
 
     const [mensage, setmensage] = useState([]);
 
     useEffect(() => {
-        function removeToast(event) {
-            const { mensage, type } = event.detail
-
+        function removeToast({type, mensage}) {
             setmensage((prevState) => [
                 ...prevState,
                 { id: Math.random(), type, mensage }
             ])
         }
 
-        document.addEventListener("addToast", removeToast)
-
+        toastEventManager.on("addToast", removeToast)
 
         return () => {
-            document.removeEventListener("addToast", removeToast)
+            toastEventManager.removeListener("addToast", removeToast)
         }
     }, []);
-    }
+
 
     return (
         <Container>
@@ -35,5 +33,5 @@ export function ToastContainer({ children }) {
             ))}
         </Container>
     )
-
+}
 

@@ -1,10 +1,7 @@
-export function ToastMenssager({ mensage, type }) {
-     const toast = new CustomEvent("addToast", {
-        detail: {
-            mensage: mensage,
-            type: type
-        },
-    })
+import EventManager from "../lib/EventManeger"
+export const toastEventManager = new EventManager();
 
-    document.dispatchEvent(toast)
+export function ToastMenssager({ mensage, type }) {
+
+    toastEventManager.emit("addToast", { mensage, type })
 }
