@@ -1,8 +1,18 @@
+import { useEffect } from "react"
 import { Containner } from "./styled"
 import xcircleIcon from "../../../assets/images/icons/check-circle.svg"
 import checkIcon from "../../../assets/images/icons/x-circle.svg"
 
 export function ToastMenssager({mensage, type, OnremoveToast, id }) {
+
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            OnremoveToast(id)
+        }, 5000)
+
+        return () => clearTimeout(timer)
+    }, [id, OnremoveToast])
+
     function removeToast (){
        OnremoveToast(id)
     }
