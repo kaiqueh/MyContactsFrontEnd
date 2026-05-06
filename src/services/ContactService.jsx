@@ -6,6 +6,10 @@ class ContactService {
         this.HttpClient = new HttpClient('http://localhost:3001')
     }
 
+    getcontactbyID(id){
+        return this.HttpClient.get(`/contacts/${id}`)
+    }
+
     ListContact(orderBy = 'asc'){
         return this.HttpClient.get(`/contacts?orderBy=${orderBy}`)
     }
