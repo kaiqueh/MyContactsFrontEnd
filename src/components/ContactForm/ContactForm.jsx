@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react"
+import { useState, useEffect, forwardRef, useImperativeHandle, use } from "react"
 import isEmailValid from "../../utils/IsEmailValid"
 import useError from "../../Hooks/UseError"
 import formatPhone from "../../utils/FormatPhone"
@@ -12,7 +12,7 @@ import { Select } from "../Input/input"
 import { Button } from "../Button/Button.jsx"
 import Spinner from "../spinner/spinner"
 
-export default function ContactForm({ LabelButton, onsubmit }) {
+const ContactForm = forwardRef(({ LabelButton, onsubmit }, ref) => {
 
     const [Name, setName] = useState("");
     const [Email, setEmail] = useState("");
@@ -23,12 +23,22 @@ export default function ContactForm({ LabelButton, onsubmit }) {
     const [isloadingCategory, setisloadingCategory] = useState(true)
     const [IsSubmitting, SetIsSubmitting] = useState(false)
 
+    const refobject = ref
+    useImperativeHandle(refobject, () => ({
+        setvalues: (contact) => {
+            setName(contact.name)
+            setEmail(contact.email)
+            setPhone(formatPhone(contact.phone))
+            setSocialMedia(contact.category_id)
+        }
+    }))
+
     useEffect(() => {
         async function LoadCategories() {
-            try{
-            let data = await CategoryService.ListCategories();
-            setcategory(data)
-            }catch{}finally{
+            try {
+                let data = await CategoryService.ListCategories();
+                setcategory(data)
+            } catch { } finally {
                 setisloadingCategory(false)
             }
         }
@@ -103,15 +113,15 @@ export default function ContactForm({ LabelButton, onsubmit }) {
                     value={Email}
                     onChange={HandleChangeEmail}
                     error={GetErrorMenssagemByFildName('Email')}
-                    disabled={IsSubmitting}/>
+                    disabled={IsSubmitting} />
             </FormGroup>
 
             <FormGroup>
                 <Input placeholder="Telefone"
-                 value={Phone}
-                 onChange={(event) => setPhone(formatPhone(event.target.value))}
-                 disabled={IsSubmitting}
-                 />
+                    value={Phone}
+                    onChange={(event) => setPhone(formatPhone(event.target.value))}
+                    disabled={IsSubmitting}
+                />
             </FormGroup>
 
             <FormGroup isloading={isloadingCategory}>
@@ -125,13 +135,17 @@ export default function ContactForm({ LabelButton, onsubmit }) {
 
             <FormGroup>
                 <Button
-                type="onsubmit"
-                isloading={IsSubmitting}
-                disabled={!IsValidForm}>
+                    type="onsubmit"
+                    isloading={IsSubmitting}
+                    disabled={!IsValidForm}>
                     {LabelButton}
                 </Button>
             </FormGroup>
 
         </Form>
     )
-}
+})
+
+export default ContactForm
+
+
